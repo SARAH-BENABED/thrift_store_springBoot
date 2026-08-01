@@ -15,12 +15,12 @@ public class ProductController {
         this.productRepository = productRepository ;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public List<Product> getProducts() {
         return productRepository.findAll() ;
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public Product addProduct(@RequestBody Product product) {
         return productRepository.save(product) ;
     }

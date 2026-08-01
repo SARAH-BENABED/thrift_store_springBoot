@@ -17,7 +17,7 @@ public class OrderController {
         this.orderRepository = orderRepository ;
     }
 
-    @PostMapping
+    @PostMapping("/send")
     public String createOrder(@RequestBody Order order) {
         int total = 0 ;
         for(OrderItem item : order.getOrderItems()) {
