@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.List ;
 
@@ -15,6 +16,7 @@ public class User {
     @Column(unique = true)
     private String email ;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password ;
 
     private String phoneNum ;
@@ -53,7 +55,7 @@ public class User {
         this.orders = orders ;
     }
     public String getPhoneNum() {
-        return password ;
+        return phoneNum ;
     }
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum ;

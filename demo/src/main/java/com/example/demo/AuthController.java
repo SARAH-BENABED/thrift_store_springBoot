@@ -48,7 +48,7 @@ public class AuthController {
             throw new  ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid email or password");
         }
         String token = jwtService.generateToken(existing.getEmail()) ;
-        return new LoginResponse(token, existing.getName(), existing.getPhoneNum()) ;
+        return new LoginResponse(token, existing) ;
 
     }
 

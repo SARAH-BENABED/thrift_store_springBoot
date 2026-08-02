@@ -2,34 +2,24 @@ package com.example.demo;
 
 public class LoginResponse {
 
+    private User user ;
     private String token ;
-    private String name ;
-    private String phone ;
 
-    public LoginResponse(String token, String name, String phone ) {
+    public LoginResponse(String token, User user ) {
         this.token = token ;
-        this.name = name ;
-        this.phone = phone ;
+        this.user = user ;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPhone() {
-        return phone;
+    public User getUser() {
+        return user;
     }
 
     public String getToken() {
         return token;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public void setToken(String token) {
