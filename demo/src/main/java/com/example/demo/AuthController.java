@@ -42,13 +42,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public LoginResponse login(@RequestBody User user) {
         User existing = userRepo.findByEmail(user.getEmail()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid email or password")) ;
         if(! passwordEncoder.matches(user.getPassword(), existing.getPassword())) {
             throw new  ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid email or password");
         }
         String token = jwtService.generateToken(existing.getEmail()) ;
-        return token ;
+        return new LoginResponse(token, existing.getName(), existing.getPhoneNum()) ;
+
     }
 
 }
