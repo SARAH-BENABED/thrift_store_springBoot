@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,25 +21,33 @@ public class AuthController {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder ;
     private final UserRepository userRepo ;
+    private final OrderRepository orderRepo ;
 
-    public AuthController(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepository userRepo) {
+    public AuthController(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepository userRepo, OrderRepository orderRepo) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder ;
         this.userRepo = userRepo ;
+        this.orderRepo = orderRepo ;
     }
     @GetMapping("/hello")
     public String hello() {
         return "Backend is running!";
     }
 
+    @Transactional
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         if((userRepo.findByEmail(user.getEmail())).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists") ;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        return userRepo.save(user) ;
+        User savedUser = userRepo.save(user) ;
+        List<Order> orders = orderRepo.findByGuestEmailAndUserIsNull(savedUser.getEmail()) ;
+        for(Order order : orders) {
+            order.setUser(savedUser);
+        }
+        orderRepo.saveAll(orders) ;
+        return savedUser ;
     }
 
     @PostMapping("/login")

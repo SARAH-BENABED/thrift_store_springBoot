@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.List ;
@@ -22,6 +23,7 @@ public class User {
     private String phoneNum ;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Order> orders ;
 
     public long getId() {

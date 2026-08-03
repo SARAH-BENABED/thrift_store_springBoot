@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List ;
@@ -16,6 +18,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
+    @JsonBackReference
     private User user ;
 
     private String guestName ;
@@ -23,6 +26,7 @@ public class Order {
     private String guestPhone ;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OrderItem> orderItems ;
 
     public long getId() {

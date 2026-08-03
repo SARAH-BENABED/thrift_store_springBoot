@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.* ;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List ;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -36,9 +37,16 @@ public class OrderController {
             order.setGuestName(user.getName());
             order.setGuestPhone(user.getPhoneNum());
         }
+        if(order.getGuestEmail() != null) {
+            Optional<User> existingUser = userRepository.findByEmail(order.getGuestEmail()) ;
+
+            if(existingUser.isPresent()) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This email is already registered . please login first") ;
+            }
+        }
         int total = 0 ;
         for(OrderItem item : order.getOrderItems()) {
-            Product product = productRepository.findById(item.getProductId()).orElseThrow(()-> new RuntimeException("Product not found !")) ;
+            Product product = productRepository.findById(item.getProductId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found !")) ;
             int price = product.getPrice() ;
             item.setProductPrice(price);
             total += price * item.getQuantity() ;
