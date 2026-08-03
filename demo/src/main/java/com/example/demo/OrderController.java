@@ -37,7 +37,7 @@ public class OrderController {
             order.setGuestName(user.getName());
             order.setGuestPhone(user.getPhoneNum());
         }
-        if(order.getGuestEmail() != null) {
+        else if(order.getGuestEmail() != null) {
             Optional<User> existingUser = userRepository.findByEmail(order.getGuestEmail()) ;
 
             if(existingUser.isPresent()) {
