@@ -26,6 +26,8 @@ public class User {
     @JsonManagedReference
     private List<Order> orders ;
 
+    private String verificationCode ;
+
     public long getId() {
         return id ;
     }
@@ -63,4 +65,11 @@ public class User {
         this.phoneNum = phoneNum ;
     }
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
 }

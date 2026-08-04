@@ -22,12 +22,14 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder ;
     private final UserRepository userRepo ;
     private final OrderRepository orderRepo ;
+    private final SimpleEmailVerificationService verificationService ;
 
-    public AuthController(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepository userRepo, OrderRepository orderRepo) {
+    public AuthController(JwtService jwtService, PasswordEncoder passwordEncoder, UserRepository userRepo, OrderRepository orderRepo, SimpleEmailVerificationService verificationService) {
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder ;
         this.userRepo = userRepo ;
         this.orderRepo = orderRepo ;
+        this.verificationService = verificationService ;
     }
     @GetMapping("/hello")
     public String hello() {
@@ -39,6 +41,9 @@ public class AuthController {
     public User register(@RequestBody User user) {
         if((userRepo.findByEmail(user.getEmail())).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists") ;
+        }
+        if(! verificationService.verifyCode(user.getEmail(), user.getVerificationCode()) ) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid or missing verification code . please try again") ;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepo.save(user) ;
