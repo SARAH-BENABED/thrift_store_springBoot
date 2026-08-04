@@ -29,6 +29,8 @@ public class Order {
     @JsonManagedReference
     private List<OrderItem> orderItems ;
 
+    private String verificationCode ;
+
     public long getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class Order {
 
     public void setGuestPhone(String guestPhone) {
         this.guestPhone = guestPhone;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
     }
 }

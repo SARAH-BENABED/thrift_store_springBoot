@@ -18,11 +18,13 @@ public class OrderController {
     private final ProductRepository productRepository ;
     private final OrderRepository orderRepository ;
     private final UserRepository userRepository ;
+    private final SimpleEmailVerificationService verificationService ;
 
-    public OrderController(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public OrderController(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository, SimpleEmailVerificationService verificationService) {
         this.productRepository = productRepository ;
         this.orderRepository = orderRepository ;
         this.userRepository = userRepository ;
+        this.verificationService = verificationService ;
     }
 
     @PostMapping("/send")
@@ -39,9 +41,12 @@ public class OrderController {
         }
         else if(order.getGuestEmail() != null) {
             Optional<User> existingUser = userRepository.findByEmail(order.getGuestEmail()) ;
-
+            System.out.println(order.getVerificationCode());
             if(existingUser.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This email is already registered . please login first") ;
+            }
+            if(! verificationService.verifyCode(order.getGuestEmail(), order.getVerificationCode()) ) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid or missing verification code . please try again") ;
             }
         }
         int total = 0 ;
