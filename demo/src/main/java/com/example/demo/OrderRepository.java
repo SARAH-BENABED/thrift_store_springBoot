@@ -5,4 +5,5 @@ import java.util.List ;
 
 public interface OrderRepository extends JpaRepository<Order, Long>{
     List<Order> findByGuestEmailAndUserIsNull(String guestEmail) ;
+    List<Order> findByUser(User user) ;
 }

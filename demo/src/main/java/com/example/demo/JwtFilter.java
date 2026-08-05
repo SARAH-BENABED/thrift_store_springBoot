@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             }catch (Exception e) {
 
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid or expired token");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid or expired token . please login again");
                 return ;
             }
         }

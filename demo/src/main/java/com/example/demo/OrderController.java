@@ -62,5 +62,14 @@ public class OrderController {
         orderRepository.save(order) ;
         return "Order saved !" ;
     }
+    @GetMapping("/my-orders")
+    public List<Order> getMyOrders(Authentication authentication) {
+
+        String email = authentication.getName() ;
+        User user = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found !")) ;
+        return orderRepository.findByUser(user) ;
+    }
+
+
 
 }
