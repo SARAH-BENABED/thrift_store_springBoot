@@ -21,6 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) .cors(cors -> {}).authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**", "/orders/send", "/products/get","/test-email/**" , "/verify/**").permitAll()
+                .requestMatchers("/products/add").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) ;
         return http.build() ;

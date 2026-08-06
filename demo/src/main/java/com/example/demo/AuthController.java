@@ -3,6 +3,7 @@ package com.example.demo;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException ;
 import io.jsonwebtoken.Jwt;
@@ -62,10 +63,12 @@ public class AuthController {
         if(! passwordEncoder.matches(user.getPassword(), existing.getPassword())) {
             throw new  ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid email or password");
         }
-        String token = jwtService.generateToken(existing.getEmail()) ;
+        String token = jwtService.generateToken(existing.getEmail(), existing.getRole().name()) ;
         return new LoginResponse(token, existing) ;
 
     }
+
+
 
 }
 
