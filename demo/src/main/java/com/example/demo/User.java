@@ -28,6 +28,9 @@ public class User {
 
     private String verificationCode ;
 
+    @Enumerated(EnumType.STRING)
+    private Role role ;
+
     public long getId() {
         return id ;
     }
@@ -71,5 +74,13 @@ public class User {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public Role getRole() {
+        return role ;
+    }
+
+    public void setRole(Role role) {
+        this.role = role ;
     }
 }

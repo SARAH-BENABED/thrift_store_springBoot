@@ -46,6 +46,7 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid or missing verification code . please try again") ;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.USER);
         User savedUser = userRepo.save(user) ;
         List<Order> orders = orderRepo.findByGuestEmailAndUserIsNull(savedUser.getEmail()) ;
         for(Order order : orders) {
