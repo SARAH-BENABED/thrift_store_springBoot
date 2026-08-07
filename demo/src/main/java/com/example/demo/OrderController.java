@@ -69,6 +69,11 @@ public class OrderController {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found !")) ;
         return orderRepository.findByUser(user) ;
     }
+    @GetMapping("/all")
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll() ;
+    }
+
 
 
 
