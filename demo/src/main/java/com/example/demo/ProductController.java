@@ -40,7 +40,7 @@ public class ProductController {
 
     @PutMapping("/update/{id}")
     public Product updateProduct(@PathVariable long id, @RequestBody Product updatedProduct) {
-        Product product = productRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found !"))  ;
+        Product product = productRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found !"))  ;
         product.setName(updatedProduct.getName());
         product.setPrice(updatedProduct.getPrice());
         product.setSize(updatedProduct.getSize());
