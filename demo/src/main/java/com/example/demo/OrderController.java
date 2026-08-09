@@ -53,6 +53,16 @@ public class OrderController {
         for(OrderItem item : order.getOrderItems()) {
             Product product = productRepository.findById(item.getProductId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found !")) ;
             int price = product.getPrice() ;
+
+            if(price != item.getProductPrice()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT,"Product price does not match") ;
+            }
+
+            String size = product.getSize() ;
+            if(! size.equals(item.getProductSize())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT,"Product size does not match") ;
+            }
+
             item.setProductPrice(price);
             total += price * item.getQuantity() ;
             item.setOrder(order);

@@ -19,6 +19,8 @@ public class OrderItem {
 
     private int productPrice ;
 
+    private String productSize ;
+
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     @JsonBackReference
@@ -72,5 +74,13 @@ public class OrderItem {
 
     public int getProductPrice() {
         return productPrice;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 }
