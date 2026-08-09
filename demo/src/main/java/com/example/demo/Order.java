@@ -3,6 +3,7 @@ package com.example.demo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.time.Instant ;
 
 import java.util.List ;
 
@@ -30,6 +31,8 @@ public class Order {
     private List<OrderItem> orderItems ;
 
     private String verificationCode ;
+
+    private Instant placedAt ;
 
     public long getId() {
         return id;
@@ -91,5 +94,13 @@ public class Order {
 
     public String getVerificationCode() {
         return verificationCode;
+    }
+
+    public Instant getPlacedAt() {
+        return placedAt ;
+    }
+
+    public void setPlacedAt(Instant placedAt) {
+        this.placedAt = placedAt;
     }
 }

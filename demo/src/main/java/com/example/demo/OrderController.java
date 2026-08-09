@@ -6,8 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.* ;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.List ;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/orders")
@@ -69,6 +71,8 @@ public class OrderController {
 
         }
         order.setTotalPrice(total);
+        order.setPlacedAt(Instant.now());
+
         orderRepository.save(order) ;
         return "Order saved !" ;
     }
