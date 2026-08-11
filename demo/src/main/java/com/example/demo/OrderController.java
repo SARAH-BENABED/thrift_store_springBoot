@@ -72,10 +72,12 @@ public class OrderController {
         }
         order.setTotalPrice(total);
         order.setPlacedAt(Instant.now());
+        order.setOrderStatus(OrderStatus.PENDING);
 
         orderRepository.save(order) ;
         return "Order saved !" ;
     }
+
     @GetMapping("/my-orders")
     public List<Order> getMyOrders(Authentication authentication) {
 
@@ -83,9 +85,25 @@ public class OrderController {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found !")) ;
         return orderRepository.findByUser(user) ;
     }
+
     @GetMapping("/all")
     public List<Order> getAllOrders() {
         return orderRepository.findAll() ;
+    }
+
+    @PatchMapping("/{id}/orderStatus")
+    public Order updateOrderStatus(@PathVariable long id, @RequestBody StatusRequest request) {
+
+        Order order = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found")) ;
+        if(order.getOrderStatus() == OrderStatus.DELIVERED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change delivered orders") ;
+        }
+        if(order.getOrderStatus() == OrderStatus.CANCELLED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change canceled orders") ;
+        }
+        order.setOrderStatus(request.getOrderStatus());
+
+        return orderRepository.save(order) ;
     }
 
 

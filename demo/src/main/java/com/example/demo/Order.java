@@ -34,6 +34,9 @@ public class Order {
 
     private Instant placedAt ;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus ;
+
     public long getId() {
         return id;
     }
@@ -102,5 +105,13 @@ public class Order {
 
     public void setPlacedAt(Instant placedAt) {
         this.placedAt = placedAt;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
